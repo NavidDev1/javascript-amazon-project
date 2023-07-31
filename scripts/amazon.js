@@ -1,5 +1,5 @@
 
-
+// generating the HTMl
 let productsHTML = '';
 
 products.forEach((product) =>{
@@ -48,7 +48,9 @@ products.forEach((product) =>{
       Added
     </div>
 
-    <button class="add-to-cart-button button-primary">
+    <button class="add-to-cart-button button-primary 
+    js-add-to-cart"
+    data-product-id="${product.id}">
       Add to Cart
     </button>
   </div>
@@ -56,6 +58,36 @@ products.forEach((product) =>{
 
 });
 
-console.log(productsHTML)
+//Using the grid to fill it out with the HTml for the products
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML
+
+/*add to cart functionality
+where we first check for matching items, if there is an matching 
+id we increase the quantity and then, we push them inside the cart.*/
+document.querySelectorAll('.js-add-to-cart')
+.forEach((button) => {
+  button.addEventListener('click', () =>{
+   const productId = button.dataset.productId;
+
+   let matchingItem;
+
+    cart.forEach((item) => {
+      if (productId === item.productId) {
+        matchingItem = item;
+      }
+    });
+
+    if (matchingItem) {
+      matchingItem.quantity += 1;
+    } else {
+      cart.push({
+        productId: productId,
+        quantity: 1
+       });
+    }
+
+
+   console.log(cart);
+  })
+})
