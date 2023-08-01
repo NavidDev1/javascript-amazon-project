@@ -16,7 +16,7 @@ cart.forEach((cartItem) => {
     }
   });
 
- 
+ //genererating the HTML with JS, using the id to display the relevant elements.
 
 cartSummaryHtml += `
 <div class="cart-item-container 
