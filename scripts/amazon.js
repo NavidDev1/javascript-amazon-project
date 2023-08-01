@@ -1,11 +1,10 @@
-import {cart} from '../data/cart.js';
-import {products} from '../data/products.js';
-
+import { cart, addToCart } from "../data/cart.js";
+import { products } from "../data/products.js";
 
 // generating the HTMl
-let productsHTML = '';
+let productsHTML = "";
 
-products.forEach((product) =>{
+products.forEach((product) => {
   productsHTML += `
     <div class="product-container">
     <div class="product-image-container">
@@ -58,48 +57,26 @@ products.forEach((product) =>{
     </button>
   </div>
     `;
-
 });
 
 //Using the grid to fill it out with the HTml for the products
 
-document.querySelector('.js-products-grid').innerHTML = productsHTML
+document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
-/*add to cart functionality
-where we first check for matching items, if there is an matching 
-id we increase the quantity and then, we push them inside the cart.*/
-document.querySelectorAll('.js-add-to-cart')
-.forEach((button) => {
-  button.addEventListener('click', () =>{
-   const productId = button.dataset.productId;
+function updateCartQuantity() {
+  let cartQuantity = 0;
 
-   let matchingItem;
+  cart.forEach((cartItem) => (cartQuantity += cartItem.quantity));
 
-    cart.forEach((item) => {
-      if (productId === item.productId) {
-        matchingItem = item;
-      }
-    });
+  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+}
 
-    if (matchingItem) {
-      matchingItem.quantity += 1;
-    } else {
-      cart.push({
-        productId: productId,
-        quantity: 1
-       });
-    }
+//Adding to cart and updating the cart quantity.
 
-    let cartQuantity = 0;
-
-    cart.forEach((item) => (
-      cartQuantity += item.quantity
-          ));
-
-
-  document.querySelector('.js-cart-quantity')
-  .innerHTML = cartQuantity;
-
-
-  })
-})
+document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+  button.addEventListener("click", () => {
+    const productId = button.dataset.productId;
+    addToCart(productId);
+    updateCartQuantity();
+  });
+});
